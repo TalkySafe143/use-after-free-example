@@ -53,14 +53,13 @@ int main() {
   // Operations decides inverter-B is being taken offline for maintenance, so
   // it is removed from the device manager. This frees the Sensor object.
   //
-  // THE BUG: whoever wrote this reconfiguration path updated `devices` and
+  // BUG: whoever wrote this reconfiguration path updated `devices` and
   // the `active` source list, but forgot that `power_group` still has a
   // cached pointer to inverter-B. The aggregator is never told to stop
   // watching it.
   std::cout << "[phase 2] taking inverter-B offline for maintenance\n";
   devices.remove_sensor("inverter-B");
   active = {"inverter-A", "inverter-C"};
-  // (missing: power_group.unwatch(s_b);)
 
   std::cout << "[phase 2] running with " << devices.size() << " sensors\n";
   for (int round = 0; round < 3; ++round) {
